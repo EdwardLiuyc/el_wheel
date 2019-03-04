@@ -79,4 +79,3 @@ using MutexLocker = Mutex::Locker;
 
 }  // namespace common
 }  // namespace calibration
-
