@@ -1,10 +1,10 @@
-#ifndef L2L_CALIB_COMMON_MATH_H_
-#define L2L_CALIB_COMMON_MATH_H_
+#ifndef EL_WHEEL_MATH_MATH_H_
+#define EL_WHEEL_MATH_MATH_H_
 
 #include <cmath>
 #include <vector>
 
-namespace calibration {
+namespace el_wheel {
 namespace math {
 
 // Clamps 'value' to be in the range ['min', 'max'].
@@ -60,6 +60,6 @@ T NormalizeAngleDifference(T difference) {
 }
 
 }  // namespace math
-}  // namespace calibration
+}  // namespace el_wheel
 
-#endif  // L2L_CALIB_COMMON_MATH_H_
+#endif  // EL_WHEEL_MATH_MATH_H_
