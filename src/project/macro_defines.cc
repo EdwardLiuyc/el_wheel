@@ -1,8 +1,9 @@
-#include <chrono>
-#include <cstring>
-#include "simple_time.h"
+#include "project/simple_time.h"
 
-static char filename[128] = {'\0'};
+namespace el_wheel {
+namespace project {
+
+static char filename[256] = {'\0'};
 char* splited_file_name(const char* file) {
   memset(filename, 0, sizeof(filename));
   std::string str = file;
@@ -16,9 +17,6 @@ SimpleTime s_debug_start_time;
 void start_clock() { s_debug_start_time = SimpleTime::get_current_time(); }
 
 void end_clock(const char* filename, const char* func_name, const int line) {
-  // PRINT_DEBUG_FMT("Cost: %lf s",
-  //                 (SimpleTime::get_current_time() -
-  //                 s_debug_start_time).toSec());
   PRINT_COLOR_FMT(
       BOLD, "[ %s: %s: %d ] Cost : %lf s", splited_file_name(filename),
       func_name, line,
@@ -53,3 +51,6 @@ void end_clock_min_time_std(double min_time) {
   double spent_time = duration_s.count();
   if (spent_time > min_time) PRINT_DEBUG_FMT("Cost: %lf s", spent_time);
 }
+
+}  // namespace project
+}  // namespace el_wheel

@@ -1,10 +1,10 @@
-#include "time.h"
+#include "project/time.h"
 #include <string>
 
-namespace calibration {
-namespace common {
+namespace el_wheel {
+namespace project {
 
-Duration FromSeconds(const double seconds) {
+project::Duration FromSeconds(const double seconds) {
   return std::chrono::duration_cast<Duration>(
       std::chrono::duration<double>(seconds));
 }
@@ -23,10 +23,10 @@ std::ostream& operator<<(std::ostream& os, const Time time) {
   return os;
 }
 
-common::Duration FromMilliseconds(const int64_t milliseconds) {
+project::Duration FromMilliseconds(const int64_t milliseconds) {
   return std::chrono::duration_cast<Duration>(
       std::chrono::milliseconds(milliseconds));
 }
 
-}  // namespace common
-}  // namespace calibration
+}  // namespace project
+}  // namespace el_wheel

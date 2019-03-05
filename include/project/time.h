@@ -1,11 +1,12 @@
-#pragma once
+#ifndef EL_WHEEL_PROJECT_TIME_H_
+#define EL_WHEEL_PROJECT_TIME_H_
 
 #include <chrono>
 #include <ostream>
 #include <ratio>
 
-namespace calibration {
-namespace common {
+namespace el_wheel {
+namespace project {
 
 constexpr int64_t kUtsEpochOffsetFromUnixEpochInSeconds =
     (719162ll * 24ll * 60ll * 60ll);
@@ -40,5 +41,7 @@ int64_t ToUniversal(Time time);
 // For logging and unit tests, outputs the timestamp integer.
 std::ostream& operator<<(std::ostream& os, Time time);
 
-}  // namespace common
-}  // namespace calibration
+}  // namespace project
+}  // namespace el_wheel
+
+#endif  // EL_WHEEL_PROJECT_TIME_H_

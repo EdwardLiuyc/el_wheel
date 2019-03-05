@@ -9,3 +9,4 @@ include_directories(include)
 
 enable_testing()
 add_subdirectory(test)
+add_subdirectory(src)

@@ -1,6 +1,6 @@
 /*!
  * @file simple_time.h
- * @brief header for class SimpleTime, BgsDuration
+ * @brief header for class SimpleTime, SimpleDuration
  *
  * @author edward.liu
  * @date 2018-10-08
@@ -8,52 +8,50 @@
  * @todo add the classes to namespace "common"
  */
 
-#pragma once
-
-#include <stdio.h>
-#include <sys/time.h>
-#include <sys/unistd.h>
-#include <cstring>
-#include <limits>
+#ifndef EL_WHEEL_PROJECT_SIMPLE_TIME_H_
+#define EL_WHEEL_PROJECT_SIMPLE_TIME_H_
 
 #include <ostream>
 #include <sstream>
 #include "macro_defines.h"
 
+namespace el_wheel {
+namespace project {
+
 /*!
- * @class BgsDuration
- * @brief class BgsDuration
+ * @class SimpleDuration
+ * @brief class SimpleDuration
  *
  * it is like the class SimpleTime but it's simpler
  * and the type of params is signed not unsigned
  *
  * @author edward.liu
  */
-class BgsDuration {
+class SimpleDuration {
  public:
-  BgsDuration() {}
-  BgsDuration(double t) {
+  SimpleDuration() {}
+  SimpleDuration(double t) {
     secs = (int32_t)t;
     nsecs = (int32_t)((t - secs) * (1000000000));
   }
-  BgsDuration(int32_t s, int32_t n) : secs(s), nsecs(n) {}
-  ~BgsDuration() {}
+  SimpleDuration(int32_t s, int32_t n) : secs(s), nsecs(n) {}
+  ~SimpleDuration() {}
 
-  BgsDuration &operator=(const BgsDuration &b) {
+  SimpleDuration &operator=(const SimpleDuration &b) {
     this->nsecs = b.nsecs;
     this->secs = b.secs;
     return *this;
   }
 
   /*!
-   * \brief get a BgsDuration instance from time in ns
+   * \brief get a SimpleDuration instance from time in ns
    */
-  static BgsDuration fromNSec(int64_t t) {
-    return BgsDuration((int32_t)(t / 1000000000), (int32_t)(t % 1000000000));
+  static SimpleDuration fromNSec(int64_t t) {
+    return SimpleDuration((int32_t)(t / 1000000000), (int32_t)(t % 1000000000));
   }
 
   /*!
-   * \brief transfrom the BgsDuration to a int value (ns)
+   * \brief transfrom the SimpleDuration to a int value (ns)
    */
   inline int64_t toNSec() const {
     return ((int64_t)secs * 1000000000 + (int64_t)nsecs);
@@ -82,14 +80,15 @@ class SimpleTime {
    * \brief get current system time into a SimpleTime instance
    */
   static SimpleTime get_current_time() {
-    struct timespec ts;
-    clock_gettime(CLOCK_REALTIME, &ts);
-
-    return SimpleTime(ts.tv_sec, ts.tv_nsec);
+    // using c++11 stl
+    auto t = std::chrono::high_resolution_clock::now();
+    auto nano_seconds = t.time_since_epoch().count();
+    return SimpleTime(nano_seconds / 1000000000ull,
+                      nano_seconds % 1000000000ull);
   }
 
   /*!
-   * \example bgs_time.h
+   * \example simple_time.h
    * this is a example for static function in SimpleTime: for_sec(double sec)
    * * 2.03 -> SimpleTime: secs = 2; nsecs = 0.03 * 1000000000;
    * * -2.03 -> SimpleTime: secs = 0; nsecs = 0;
@@ -132,9 +131,6 @@ class SimpleTime {
 
   bool operator!=(const SimpleTime &b) const { return !((*this) == b); }
 
-  // 判断时间相同有一个阈值，直接判断相等通常来说都不相等
-  // 这里暂时定阈值为 1us
-  // TODO 后面的大小判断都应该有这个阈值，这个阈值也应该可以设定
   bool operator==(const SimpleTime &b) const {
     int64_t diff = this->toNSec() - b.toNSec();
     int64_t range = u_judge_range;
@@ -154,7 +150,7 @@ class SimpleTime {
   /*!
    * \warning there is risk of overflow
    */
-  SimpleTime operator+(const BgsDuration &b) const {
+  SimpleTime operator+(const SimpleDuration &b) const {
     int64_t tmp_nsecs = this->toNSec() + b.toNSec();
     return fromNSec(tmp_nsecs);
   }
@@ -244,7 +240,9 @@ class SimpleTime {
   /*!
    * \brief using usleep to delay
    */
-  inline void sleep() { usleep(toNSec() * 0.001); }
+  inline void sleep() {
+    std::this_thread::sleep_for(std::chrono::nanoseconds(toNSec()));
+  }
 
   /*!
    * \brief set the time to zero
@@ -263,3 +261,8 @@ class SimpleTime {
    */
   uint32_t u_judge_range;
 };
+
+}  // namespace project
+}  // namespace el_wheel
+
+#endif  // EL_WHEEL_PROJECT_SIMPLE_TIME_H_

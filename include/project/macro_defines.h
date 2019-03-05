@@ -12,10 +12,42 @@
 #ifndef EL_WHEEL_PROJECT_MACRO_DEFINES_H_
 #define EL_WHEEL_PROJECT_MACRO_DEFINES_H_
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <chrono>
+#include <cstdio>
+#include <cstring>
 #include <iostream>
 #include <string>
+#include <thread>
+
+namespace el_wheel {
+namespace project {
+
+/*!
+ * \brief just for debug
+ *
+ * use this function with end_clock/end_clock_min_time
+ * the when you call end_clock, you will get the time cost from the start to
+ * the end
+ */
+void start_clock();
+/*
+ * @breif usually, we use it like this:
+ * end_clock(__FILE__, __FUNCTION__, __LINE__)
+ */
+void end_clock(const char* filename, const char* func_name, const int line);
+void end_clock_min_time(double min_time);
+
+void start_clock_std();
+void end_clock_std();
+void end_clock_min_time_std(double min_time);
+
+/*!
+ * @brief return the filename without path
+ */
+char* splited_file_name(const char*);
+
+}  // namespace project
+}  // namespace el_wheel
 
 #define NONE_FORMAT "\e[0m"
 #define BLACK "\e[1;30m"
@@ -43,10 +75,7 @@
 #define CLEAR "\e[2J"
 #define CLRLINE "\r\e[K"  // or "\e[1K\r"
 
-/*!
- * @brief return the filename without path
- */
-char* splited_file_name(const char*);
+using el_wheel::project::splited_file_name;
 
 /*!
  * @def PRINT_ERROR(args)
@@ -128,12 +157,12 @@ char* splited_file_name(const char*);
 #endif
 
 /*!
- * \def BGS_MEM_BARRIER
+ * \def EL_WHEEL_MEM_BARRIER
  * memory barrier in asm way, it makes sure that
  * the value of variable written to memory instead of register
  */
-#ifndef BGS_MEM_BARRIER
-#define BGS_MEM_BARRIER \
+#ifndef EL_WHEEL_MEM_BARRIER
+#define EL_WHEEL_MEM_BARRIER \
   { asm volatile("" : : : "memory"); }
 #endif
 
@@ -149,19 +178,6 @@ char* splited_file_name(const char*);
 
 #define RAD_TO_DEG 57.29577951
 
-/*!
- * \brief just for debug
- *
- * use this function with end_clock/end_clock_min_time
- * the when you call end_clock, you will get the time cost from the start to
- * the end
- */
-void start_clock();
-void end_clock(const char* filename, const char* func_name, const int line);
-void end_clock_min_time(double min_time);
-
-void start_clock_std();
-void end_clock_std();
-void end_clock_min_time_std(double min_time);
+#define EL_WHEEL_INT_MAX Ox3f3f3f3f
 
 #endif  // EL_WHEEL_PROJECT_MACRO_DEFINES_H_

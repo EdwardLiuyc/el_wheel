@@ -18,3 +18,8 @@ add_test( eulers_transform_test eulers_transform_test )
 add_executable( math_test math/math_test.cc )
 target_link_libraries(math_test gtest gtest_main)
 add_test( math_test math_test )
+
+# math
+add_executable( macro_test project/macro_test.cc )
+target_link_libraries(macro_test gtest gtest_main el_wheel_project)
+add_test( macro_test macro_test )
