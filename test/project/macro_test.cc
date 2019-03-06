@@ -24,6 +24,27 @@ TEST(clock_test, clock_test) {
   t.sleep();
   end_clock(__FILE__, __FUNCTION__, __LINE__);
 }
+
+TEST(clock_test_muilt_thread, clock_test_muilt_thread) {
+  std::thread t1([]() {
+    start_clock();
+    SimpleTime::from_sec(0.5).sleep();
+    end_clock(__FILE__, __FUNCTION__, __LINE__);
+
+    // the __FUNCTION__ will be "operator()"
+    // refer to C++11 lamda
+  });
+  std::thread t2([]() {
+    start_clock();
+    SimpleTime::from_sec(0.25).sleep();
+    end_clock(__FILE__, __FUNCTION__, __LINE__);
+  });
+  std::thread t3([]() { end_clock(__FILE__, __FUNCTION__, __LINE__); });
+
+  t1.join();
+  t2.join();
+  t3.join();
+}
 }  // namespace test
 }  // namespace project
 }  // namespace el_wheel
