@@ -35,7 +35,6 @@ void start_clock();
  * end_clock(__FILE__, __FUNCTION__, __LINE__)
  */
 void end_clock(const char* filename, const char* func_name, const int line);
-// void end_clock_min_time(double min_time);
 
 /*!
  * @brief return the filename without path

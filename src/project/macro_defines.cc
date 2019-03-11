@@ -65,11 +65,5 @@ void end_clock(const char* filename, const char* func_name, const int line) {
   }
 }
 
-// void end_clock_min_time(double min_time) {
-//   double spent_time =
-//       (SimpleTime::get_current_time() - s_debug_start_time).toSec();
-//   if (spent_time > min_time) PRINT_DEBUG_FMT("Cost: %lf s", spent_time);
-// }
-
 }  // namespace project
 }  // namespace el_wheel
