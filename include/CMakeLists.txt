@@ -17,3 +17,9 @@ install(FILES
   ${PROJ_DIR}/time.h
   ${PROJ_DIR}/simple_time.h
   DESTINATION include/${PROJECT_NAME}/${PROJ_DIR})
+
+set(PERF_DIR performance)
+install(FILES 
+  ${PERF_DIR}/process_info.h
+  ${PERF_DIR}/simple_prof.h
+  DESTINATION include/${PROJECT_NAME}/${PERF_DIR})

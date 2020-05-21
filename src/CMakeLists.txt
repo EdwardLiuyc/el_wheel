@@ -1,8 +1,9 @@
 set(LIB_PROJECT_NAME ${PROJECT_NAME})
-set(PROJECT_SRCS 
-  project/macro_defines.cc
-  project/time.cc)
-add_library(${LIB_PROJECT_NAME} ${PROJECT_SRCS})
+
+file(GLOB perf_srcs "performance/*.cc")
+file(GLOB proj_srcs "project/*.cc")
+
+add_library(${PROJECT_NAME} ${proj_srcs} ${perf_srcs})
 
 install(TARGETS ${LIB_PROJECT_NAME}
   RUNTIME DESTINATION bin/${PROJECT_NAME}
