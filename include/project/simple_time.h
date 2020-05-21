@@ -46,14 +46,14 @@ class SimpleDuration {
   /*!
    * \brief get a SimpleDuration instance from time in ns
    */
-  static SimpleDuration fromNSec(int64_t t) {
+  static SimpleDuration FromNSec(int64_t t) {
     return SimpleDuration((int32_t)(t / 1000000000), (int32_t)(t % 1000000000));
   }
 
   /*!
    * \brief transfrom the SimpleDuration to a int value (ns)
    */
-  inline int64_t toNSec() const {
+  inline int64_t ToNSec() const {
     return ((int64_t)secs * 1000000000 + (int64_t)nsecs);
   }
 
@@ -79,10 +79,10 @@ class SimpleTime {
   /*!
    * \brief get current system time into a SimpleTime instance
    */
-  static SimpleTime get_current_time() {
+  static SimpleTime GetCurrentTime() {
     // using c++11 stl
-    auto t = std::chrono::high_resolution_clock::now();
-    auto nano_seconds = t.time_since_epoch().count();
+    const auto t = std::chrono::high_resolution_clock::now();
+    const auto nano_seconds = t.time_since_epoch().count();
     return SimpleTime(nano_seconds / 1000000000ull,
                       nano_seconds % 1000000000ull);
   }
@@ -99,7 +99,7 @@ class SimpleTime {
   /*!
    * \brief get a SimpleTime instance from time in second
    */
-  static SimpleTime from_sec(double sec) {
+  static SimpleTime FromSec(double sec) {
     SimpleTime time;
 
     if (sec < 0.) return time;
@@ -112,14 +112,14 @@ class SimpleTime {
   /*!
    * \brief get a SimpleTime instance from time in ns
    */
-  static SimpleTime fromNSec(uint64_t t) {
+  static SimpleTime FromNSec(uint64_t t) {
     return SimpleTime((uint32_t)(t / 1000000000), (uint32_t)(t % 1000000000));
   }
 
   /*!
    * \brief get a SimpleTime instance with the max value
    */
-  static SimpleTime TIME_MAX() {
+  static SimpleTime TimeMax() {
     return SimpleTime((uint32_t)(0xFFFFFFFF), (uint32_t)999999999);
   }
 
@@ -132,7 +132,7 @@ class SimpleTime {
   bool operator!=(const SimpleTime &b) const { return !((*this) == b); }
 
   bool operator==(const SimpleTime &b) const {
-    int64_t diff = this->toNSec() - b.toNSec();
+    int64_t diff = this->ToNSec() - b.ToNSec();
     int64_t range = u_judge_range;
 
     if (diff < 0) diff = -diff;
@@ -143,28 +143,28 @@ class SimpleTime {
    * \warning there is risk of overflow
    */
   SimpleTime operator+(const SimpleTime &b) const {
-    int64_t tmp_nsecs = this->toNSec() + b.toNSec();
-    return fromNSec(tmp_nsecs);
+    int64_t tmp_nsecs = this->ToNSec() + b.ToNSec();
+    return FromNSec(tmp_nsecs);
   }
 
   /*!
    * \warning there is risk of overflow
    */
   SimpleTime operator+(const SimpleDuration &b) const {
-    int64_t tmp_nsecs = this->toNSec() + b.toNSec();
-    return fromNSec(tmp_nsecs);
+    int64_t tmp_nsecs = this->ToNSec() + b.ToNSec();
+    return FromNSec(tmp_nsecs);
   }
 
   /*!
    * \warning there is risk of overflow
    */
   SimpleTime operator-(const SimpleTime &b) const {
-    int64_t tmp_nsecs = this->toNSec() - b.toNSec();
+    int64_t tmp_nsecs = this->ToNSec() - b.ToNSec();
     if (tmp_nsecs < 0) {
       PRINT_INFO("Result is set to 0!");
       tmp_nsecs = 0;
     }
-    return fromNSec(tmp_nsecs);
+    return FromNSec(tmp_nsecs);
   }
 
   SimpleTime &operator/=(const int &a) {
@@ -178,7 +178,7 @@ class SimpleTime {
       PRINT_WARNING("/a -> /(-a)!");
       div = -div;
     }
-    int64_t tmp_nsecs = this->toNSec();
+    int64_t tmp_nsecs = this->ToNSec();
     tmp_nsecs /= div;
 
     secs = (uint32_t)(tmp_nsecs / 1000000000);
@@ -198,13 +198,13 @@ class SimpleTime {
   /*!
    * @todo use the "judge range" in these judgement
    */
-  bool operator<(const SimpleTime &b) const { return (toNSec() < b.toNSec()); }
+  bool operator<(const SimpleTime &b) const { return (ToNSec() < b.ToNSec()); }
   bool operator<=(const SimpleTime &b) const {
-    return (toNSec() <= b.toNSec());
+    return (ToNSec() <= b.ToNSec());
   }
-  bool operator>(const SimpleTime &b) const { return (toNSec() > b.toNSec()); }
+  bool operator>(const SimpleTime &b) const { return (ToNSec() > b.ToNSec()); }
   bool operator>=(const SimpleTime &b) const {
-    return (toNSec() >= b.toNSec());
+    return (ToNSec() >= b.ToNSec());
   }
 
   friend std::ostream &operator<<(std::ostream &os, SimpleTime t1) {
@@ -221,38 +221,37 @@ class SimpleTime {
   /*!
    * \brief transfrom the SimpleTime to a double value (seconds)
    */
-  inline double toSec() const {
+  inline double ToSec() const {
     return (double)this->secs + (double)(this->nsecs * 1.e-9);
   }
 
   /*!
    * \brief determining if the time euqals zero
    */
-  inline bool isZero() const { return (nsecs == 0 && secs == 0); }
+  inline bool IsZero() const { return (nsecs == 0 && secs == 0); }
 
   /*!
    * \brief transfrom the SimpleTime to a int value (ns)
    */
-  inline int64_t toNSec() const {
+  inline int64_t ToNSec() const {
     return ((int64_t)secs * 1000000000 + (int64_t)nsecs);
   }
 
   /*!
    * \brief using usleep to delay
    */
-  inline void sleep() {
-    std::this_thread::sleep_for(std::chrono::nanoseconds(toNSec()));
+  inline void Sleep() {
+    std::this_thread::sleep_for(std::chrono::nanoseconds(ToNSec()));
   }
 
   /*!
    * \brief set the time to zero
    */
-  inline void zero() { secs = nsecs = 0; }
-
-  uint32_t secs;
-  uint32_t nsecs;
+  inline void Zero() { secs = nsecs = 0; }
 
  private:
+  uint32_t secs;
+  uint32_t nsecs;
   /*!
    * @brief it is a range when determining if two time are euqal
    * for now, it is set to 1000 (ns)

@@ -13,7 +13,6 @@ install(FILES
 set(PROJ_DIR project)
 install(FILES 
   ${PROJ_DIR}/macro_defines.h
-  ${PROJ_DIR}/make_unique.h
   ${PROJ_DIR}/mutex.h
   ${PROJ_DIR}/time.h
   ${PROJ_DIR}/simple_time.h

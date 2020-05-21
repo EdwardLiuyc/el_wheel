@@ -19,16 +19,16 @@ TEST(debug_prints_test, debug_prints_test) {
 }
 
 TEST(clock_test, clock_test) {
-  SimpleTime t = SimpleTime::from_sec(0.21);
+  SimpleTime t = SimpleTime::FromSec(0.21);
   start_clock();
-  t.sleep();
+  t.Sleep();
   end_clock(__FILE__, __FUNCTION__, __LINE__);
 }
 
 TEST(clock_test_muilt_thread, clock_test_muilt_thread) {
   std::thread t1([]() {
     start_clock();
-    SimpleTime::from_sec(0.5).sleep();
+    SimpleTime::FromSec(0.5).Sleep();
     end_clock(__FILE__, __FUNCTION__, __LINE__);
 
     // the __FUNCTION__ will be "operator()"
@@ -36,7 +36,7 @@ TEST(clock_test_muilt_thread, clock_test_muilt_thread) {
   });
   std::thread t2([]() {
     start_clock();
-    SimpleTime::from_sec(0.25).sleep();
+    SimpleTime::FromSec(0.25).Sleep();
     end_clock(__FILE__, __FUNCTION__, __LINE__);
   });
   std::thread t3([]() { end_clock(__FILE__, __FUNCTION__, __LINE__); });

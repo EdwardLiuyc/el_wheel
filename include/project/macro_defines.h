@@ -143,6 +143,8 @@ using el_wheel::project::splited_file_name;
 #define PRINT_COLOR_FMT(color, fmt, ...) \
   (printf(color fmt NONE_FORMAT "\n", __VA_ARGS__))
 
+#define EL_DEBUG PRINT_DEBUG("")
+
 /*!
  * \def DOUBLE_M_PI
  * M_PI * 2

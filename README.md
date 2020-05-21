@@ -1,5 +1,5 @@
 # el_wheel
-Some common use function in c++ project and math
+Some common use functions in c++ project and math
 
 ## Build & Install
 > Only tested in ubuntu!!!
@@ -28,6 +28,17 @@ sudo ninja install
 
 ## Todo list
 - [ ] add tests  
-- [ ] add install in cmakelists  
+  - [ ] time
+  - [ ] SimpleTime
+  - [ ] Macros
+  - [ ] mutex
+  - [ ] eulers & transforms
+  - [ ] average quaternion
+  - [ ] math 
+- [x] add install in cmakelists  
 - [x] use C++ time instead of posix time  
 - [ ] avoid singularity in eulers 
+- [ ] use map (or unordered_map) instead of vector for clocks
+- [ ] SimpleTime: user-define judge time
+- [ ] add cmake find
+- [ ] add cc file for simple time instead of implementation in header file
